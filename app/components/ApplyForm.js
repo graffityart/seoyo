@@ -2,7 +2,9 @@
 
 import { useMemo, useState } from 'react';
 
-export default function ApplyForm({ products, banks }) {
+export default function ApplyForm({ products, banks, settings }) {
+  const minAmount = Number(settings?.minimumOrderAmount || 10000);
+  const transferFee = Number(settings?.transferFee || 500);
   const [selected, setSelected] = useState(products[0]?.id || null);
   const [pin, setPin] = useState('');
   const [faceValue, setFaceValue] = useState('');
@@ -17,7 +19,7 @@ export default function ApplyForm({ products, banks }) {
 
   const product = products.find((p) => String(p.id) === String(selected));
   const total = useMemo(() => items.reduce((sum, x) => sum + x.faceValue, 0), [items]);
-  const expected = useMemo(() => Math.max(0, items.reduce((sum, x) => sum + Math.floor(x.faceValue * x.rate / 100), 0) - (items.length ? 500 : 0)), [items]);
+  const expected = useMemo(() => Math.max(0, items.reduce((sum, x) => sum + Math.floor(x.faceValue * x.rate / 100), 0) - (items.length ? transferFee : 0)), [items, transferFee]);
 
   function addItem(amountOverride) {
     const amount = Number(amountOverride ?? String(faceValue).replace(/,/g, ''));
@@ -31,7 +33,7 @@ export default function ApplyForm({ products, banks }) {
   }
 
   async function submit() {
-    if (total < 10000) return alert('최소 판매금액은 1만원 이상 입니다');
+    if (total < minAmount) return alert(`최소 판매금액은 ${minAmount.toLocaleString()}원 이상 입니다`);
     if (!bankId || !accountNumber || !customerName || !phone) return alert('계좌정보와 연락처를 모두 입력해 주세요.');
     if (!password || password !== password2) return alert('조회 비밀번호를 확인해 주세요.');
     if (password.length > 10) return alert('조회 비밀번호는 최대 10자리입니다.');
@@ -58,7 +60,7 @@ export default function ApplyForm({ products, banks }) {
     <div className="accountGrid"><select value={bankId} onChange={(e)=>setBankId(e.target.value)}><option value="">은행 선택</option>{banks.map((b)=><option key={b.id} value={b.id}>{b.name}</option>)}</select><input value={accountNumber} onChange={(e)=>setAccountNumber(e.target.value.replace(/[^0-9]/g,''))} placeholder="계좌번호를 입력하세요."/><input value={customerName} onChange={(e)=>setCustomerName(e.target.value)} placeholder="고객명(예금주)을 입력하세요."/></div>
     <label>연락처</label><div className="passwordGrid"><input value={phone} onChange={(e)=>setPhone(e.target.value.replace(/[^0-9]/g,''))} placeholder="휴대폰 번호를 입력하세요."/></div>
     <label>조회 비밀번호</label><div className="passwordGrid"><input type="password" value={password} onChange={(e)=>setPassword(e.target.value)} placeholder="접수 비밀번호(최대 10자리)"/><input type="password" value={password2} onChange={(e)=>setPassword2(e.target.value)} placeholder="접수 비밀번호 확인"/></div>
-    <div className="noticeBox"><b>꼭! 알아두세요.</b><span>신청 건당 이체수수료 500원이 부과됩니다.</span><span>최소 판매금액은 1만원 이상입니다.</span></div>
+    <div className="noticeBox"><b>꼭! 알아두세요.</b><span>신청 건당 이체수수료 {transferFee.toLocaleString()}원이 부과됩니다.</span><span>최소 판매금액은 {minAmount.toLocaleString()}원 이상입니다.</span></div>
     <button className="submitBtn" type="button" disabled={submitting} onClick={submit}>{submitting?'접수 중...':'상품권 현금교환 신청'}</button>
   </div>;
 }
