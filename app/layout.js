@@ -1,4 +1,5 @@
 import './globals.css';
+import './hero-polish.css';
 
 export const metadata = {
   metadataBase: new URL('https://seoyo.kr'),
