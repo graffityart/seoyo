@@ -8,6 +8,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@neondatabase/serverless": "^1.0.2",
     "next": "15.5.24",
     "react": "19.1.0",
     "react-dom": "19.1.0"
