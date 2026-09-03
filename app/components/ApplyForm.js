@@ -19,18 +19,15 @@ export default function ApplyForm({ products, banks }) {
   const total = useMemo(() => items.reduce((sum, x) => sum + x.faceValue, 0), [items]);
   const expected = useMemo(() => Math.max(0, items.reduce((sum, x) => sum + Math.floor(x.faceValue * x.rate / 100), 0) - (items.length ? 500 : 0)), [items]);
 
-  function addItem() {
-    const amount = Number(String(faceValue).replace(/,/g, ''));
+  function addItem(amountOverride) {
+    const amount = Number(amountOverride ?? String(faceValue).replace(/,/g, ''));
     const cleanPin = pin.replace(/\s|-/g, '');
     if (!product) return alert('상품권을 선택해 주세요.');
     if (!cleanPin) return alert('상품권 핀번호를 입력해 주세요.');
     if (!Number.isFinite(amount) || amount <= 0) return alert('상품권 금액을 입력해 주세요.');
-    if (product.slug === 'lotte-mobile' && !cleanPin.startsWith('23')) {
-      return alert("23으로 시작하는 '롯데 모바일 교환권'만 매입합니다");
-    }
+    if (product.slug === 'lotte-mobile' && !cleanPin.startsWith('23')) return alert("23으로 시작하는 '롯데 모바일 교환권'만 매입합니다");
     setItems((prev) => [...prev, { productId: product.id, name: product.name, pin: cleanPin, faceValue: amount, rate: Number(product.default_rate) }]);
-    setPin('');
-    setFaceValue('');
+    setPin(''); setFaceValue('');
   }
 
   async function submit() {
@@ -53,8 +50,8 @@ export default function ApplyForm({ products, banks }) {
     <label>상품권</label>
     <div className="productStrip">{products.map((p)=><button type="button" key={p.id} onClick={()=>setSelected(p.id)} aria-pressed={String(selected)===String(p.id)}><span>{p.name}</span><b>{Number(p.default_rate).toFixed(0)}%</b></button>)}</div>
     <label>핀번호</label>
-    <div className="pinRow"><input value={pin} onChange={(e)=>setPin(e.target.value)} placeholder="상품권 핀번호 입력"/><input value={faceValue} onChange={(e)=>setFaceValue(e.target.value.replace(/[^0-9]/g,''))} placeholder="상품권 금액 입력"/><button type="button" onClick={addItem}>+</button></div>
-    <div className="quickAmounts"><span>빠른 금액</span>{[10000,20000,30000,50000,100000].map(v=><button type="button" key={v} onClick={()=>{setFaceValue(String(v)); setTimeout(addItem,0)}}>{v.toLocaleString()}</button>)}</div>
+    <div className="pinRow"><input value={pin} onChange={(e)=>setPin(e.target.value)} placeholder="상품권 핀번호 입력"/><input value={faceValue} onChange={(e)=>setFaceValue(e.target.value.replace(/[^0-9]/g,''))} placeholder="상품권 금액 입력"/><button type="button" onClick={()=>addItem()}>+</button></div>
+    <div className="quickAmounts"><span>빠른 금액</span>{[10000,20000,30000,50000,100000].map(v=><button type="button" key={v} onClick={()=>addItem(v)}>{v.toLocaleString()}</button>)}</div>
     {items.length>0 && <div className="noticeBox"><b>추가된 상품권</b>{items.map((x,i)=><span key={i}>{x.name} · {x.faceValue.toLocaleString()}원 · PIN 끝자리 {x.pin.slice(-4)}</span>)}</div>}
     <div className="sumGrid"><div><span>총금액</span><strong>{total.toLocaleString()}원</strong></div><div><span>예상입금</span><strong>{expected.toLocaleString()}원</strong></div></div>
     <label>계좌정보</label>
