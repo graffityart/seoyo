@@ -1,4 +1,4 @@
-import { getActiveBanks, getActiveProducts } from '../lib/db';
+import { getActiveBanks, getActiveProducts, getLiveOrders } from '../lib/db';
 import ApplyForm from './components/ApplyForm';
 
 const productImages = {
@@ -19,15 +19,32 @@ const steps = [
   ['04','https://www.ksdl.kr/images/icon4.png','처리 완료','확인 결과에 따라 입금하고 처리상태를 안내합니다.'],
 ];
 
+const statusLabel = {
+  received: '접수중',
+  checking: '확인중',
+  completed: '입금완료',
+  paid: '입금완료',
+  impossible: '처리불가',
+  rejected: '처리불가',
+};
+
+function maskName(name='') {
+  const chars = Array.from(name);
+  if (chars.length <= 1) return '*';
+  if (chars.length === 2) return `${chars[0]}*`;
+  return `${chars[0]}*${chars[chars.length-1]}`;
+}
+
 export const dynamic = 'force-dynamic';
 
 export default async function Home(){
-  const [products, banks] = await Promise.all([getActiveProducts(), getActiveBanks()]);
+  const [products, banks, liveOrders] = await Promise.all([getActiveProducts(), getActiveBanks(), getLiveOrders(8)]);
   const safeProducts = products.map((p)=>({ id:Number(p.id), name:p.name, slug:p.slug, default_rate:Number(p.default_rate) }));
   const safeBanks = banks.map((b)=>({ id:Number(b.id), name:b.name, code:b.code }));
   const rates = safeProducts.map((p) => [p.name, `${Number(p.default_rate).toFixed(0)}%`, productImages[p.slug] || '', p.slug]);
   const now = new Date();
   const fmt = new Intl.DateTimeFormat('ko-KR',{timeZone:'Asia/Seoul',year:'2-digit',month:'2-digit',day:'2-digit',weekday:'short'}).format(now);
+  const timeFmt = new Intl.DateTimeFormat('ko-KR',{timeZone:'Asia/Seoul',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false});
   return <div className="sayo" id="top">
     <header className="topbar"><div className="shell headerIn">
       <a className="logo" href="#top"><span className="logoSymbol">S</span><span className="logoText">사요 상품권</span></a>
@@ -42,7 +59,7 @@ export default async function Home(){
 
       <section id="apply" className="applySection"><div className="shell"><div className="sectionTitle"><p>상품권 현금교환</p><h2>상품권 정보를 입력하고 바로 신청하세요</h2><span>상품권 선택부터 PIN·계좌정보·조회 비밀번호까지 한 번에 접수할 수 있습니다.</span></div><ApplyForm products={safeProducts} banks={safeBanks}/></div></section>
 
-      <section id="live" className="liveSection"><div className="shell"><div className="liveCard"><div className="liveHead"><div><span className="liveIcon">▣</span><div><h2>실시간 진행 현황</h2><p>최근 매입 현황입니다</p></div></div><div className="liveDate"><i></i>{fmt}</div></div><div className="liveEmpty">실시간 데이터는 주문 저장 기능 연결 후 이 영역에 표시됩니다.</div><time>사요 상품권 실시간 매입현황</time></div></div></section>
+      <section id="live" className="liveSection"><div className="shell"><div className="liveCard"><div className="liveHead"><div><span className="liveIcon">▣</span><div><h2>실시간 진행 현황</h2><p>최근 매입 현황입니다</p></div></div><div className="liveDate"><i></i>{fmt}</div></div>{liveOrders.length ? <div className="liveRows">{liveOrders.map((o)=><div className="liveRow" key={o.order_no}><div className="liveProduct"><b>{o.product_names}</b><span>{Number(o.item_count).toLocaleString()}건</span></div><div className="liveCustomer">{maskName(o.customer_name)}</div><div className="liveAmount">{Number(o.requested_amount).toLocaleString()}원</div><div className={`liveStatus status-${o.status}`}>{statusLabel[o.status] || '처리중'}</div><time>{timeFmt.format(new Date(o.created_at))}</time></div>)}</div> : <div className="liveEmpty">아직 접수된 매입 내역이 없습니다.</div>}<div className="liveFoot">개인정보 보호를 위해 신청자명은 일부 마스킹되어 표시됩니다.</div></div></div></section>
 
       <section id="guide" className="guideSection"><div className="shell"><div className="sectionTitle"><p>이용 절차</p><h2>신청부터 입금까지 4단계</h2><span>처음 이용해도 순서대로 진행하면 어렵지 않습니다.</span></div><div className="stepGridKsdl">{steps.map(([n,img,t,d])=><article key={n}><span>{n}</span><div><img src={img} alt={t}/></div><h3>{t}</h3><p>{d}</p></article>)}</div><div className="centerBtn"><a href="#guide">자세한 이용방법 보기</a></div></div></section>
 
