@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getDb } from '../../../lib/db';
+import { getDb, getServiceSettings } from '../../../lib/db';
 import { encryptText, hashPassword } from '../../../lib/secure';
 
 export const dynamic = 'force-dynamic';
@@ -20,6 +20,7 @@ export async function POST(request) {
       return NextResponse.json({ message: '필수 신청정보를 확인해 주세요.' }, { status: 400 });
     }
     if (String(password).length > 10) return NextResponse.json({ message: '조회 비밀번호는 최대 10자리입니다.' }, { status: 400 });
+    const [settings] = await Promise.all([getServiceSettings()]);
     const sql = getDb();
     const ids = items.map(x => Number(x.productId)).filter(Boolean);
     const products = await sql`SELECT id, name, slug, default_rate FROM products WHERE is_active=true AND id = ANY(${ids})`;
@@ -38,8 +39,8 @@ export async function POST(request) {
       requested += face; expectedGross += itemExpected;
       normalized.push({ productId: Number(p.id), pin, face, rate, itemExpected });
     }
-    if (requested < 10000) return NextResponse.json({ message: '최소 판매금액은 1만원 이상 입니다' }, { status: 400 });
-    const expected = Math.max(0, expectedGross - 500);
+    if (requested < settings.minimumOrderAmount) return NextResponse.json({ message: `최소 판매금액은 ${settings.minimumOrderAmount.toLocaleString()}원 이상 입니다` }, { status: 400 });
+    const expected = Math.max(0, expectedGross - settings.transferFee);
     const orderNo = makeOrderNo();
     const phoneDigits = String(phone).replace(/[^0-9]/g,'');
     const accountDigits = String(accountNumber).replace(/[^0-9]/g,'');
