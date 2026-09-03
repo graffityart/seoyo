@@ -1,0 +1,54 @@
+/* Sayo exchange form refinement */
+.applySection{padding:76px 0 84px;background:linear-gradient(180deg,#f7f9fb 0%,#f4f8fc 100%)}
+.applySection .sectionTitle{margin-bottom:28px}
+.applySection .sectionTitle p{color:#178fe0;font-size:12px;font-weight:900}
+.applySection .sectionTitle h2{color:#1d3348;font-size:30px;font-weight:900}
+.applyCard{max-width:1080px;margin:0 auto;padding:30px 32px 34px;border:1px solid #e1e9f0;border-radius:22px;background:#fff;box-shadow:0 18px 44px rgba(34,66,96,.08)}
+.applyCard h3{margin:0 0 22px;padding-bottom:18px;border-bottom:1px solid #edf1f5;color:#1e3448;font-size:21px;font-weight:900}
+.applyCard label{margin:21px 0 9px;color:#354b5e;font-size:12px;font-weight:900}
+.productStrip{grid-template-columns:repeat(3,1fr);gap:9px;padding:14px;border:1px solid #edf1f5;border-radius:15px;background:#f8fafc}
+.productStrip button{min-height:64px;display:grid;grid-template-columns:36px 1fr auto;align-items:center;gap:9px;padding:9px 12px;border:1px solid #e1e8ee;border-radius:10px;background:#fff;text-align:left;transition:border-color .18s ease,box-shadow .18s ease,transform .18s ease}
+.productStrip button:hover{transform:translateY(-1px);border-color:#94cdef;box-shadow:0 7px 16px rgba(38,116,169,.08)}
+.productStrip button:first-child{border-color:#ef7990;background:#fffafb;box-shadow:0 0 0 2px rgba(239,121,144,.06)}
+.productStrip img{width:34px;height:34px;margin:0;object-fit:contain}
+.productStrip span{margin:0;color:#415363;font-size:10px;font-weight:700;line-height:1.35}
+.productStrip b{color:#1489d0;font-size:11px;font-weight:900}
+.pinRow{grid-template-columns:1.35fr .85fr 50px;gap:9px}
+.pinRow input,.accountGrid input,.accountGrid select,.passwordGrid input{height:47px;padding:0 13px;border:1px solid #dce4eb;border-radius:9px;color:#263b4d;background:#fff;font-size:12px;outline:none;transition:border-color .18s ease,box-shadow .18s ease}
+.pinRow input:focus,.accountGrid input:focus,.accountGrid select:focus,.passwordGrid input:focus{border-color:#69b9ec;box-shadow:0 0 0 3px rgba(34,151,225,.09)}
+.pinRow input::placeholder,.accountGrid input::placeholder,.passwordGrid input::placeholder{color:#a4afb8}
+.pinRow>button{border:0;border-radius:10px;background:linear-gradient(180deg,#24a7e8,#1286d0);box-shadow:0 7px 15px rgba(20,139,211,.18);color:#fff;font-size:21px;font-weight:800}
+.quickAmounts{gap:7px;margin-top:10px}
+.quickAmounts span{color:#7d8994;font-size:10px;font-weight:700}
+.quickAmounts button{padding:6px 10px;border:1px solid #dfe6ec;border-radius:7px;background:#fff;color:#435565;font-size:10px;font-weight:700;cursor:pointer}
+.quickAmounts button:hover{border-color:#9fcfeb;background:#f5fbff;color:#1284c8}
+.sumGrid{gap:0;margin-top:20px;padding:16px 18px;border:1px solid #e8eef3;border-radius:13px;background:#f8fbfd}
+.sumGrid>div{padding:2px 13px}
+.sumGrid>div:first-child{padding-left:0}
+.sumGrid>div+div{border-left:1px solid #e1e8ee}
+.sumGrid span{color:#7e8b96;font-size:10px;font-weight:700}
+.sumGrid strong{margin-top:5px;color:#1e3549;font-size:15px;font-weight:900}
+.accountGrid{grid-template-columns:.62fr 1.2fr 1fr;gap:9px}
+.passwordGrid{gap:9px}
+.noticeBox{margin-top:21px;padding:15px 17px;border:1px solid #f2e4bc;border-radius:11px;background:#fffaf0;color:#685d42;font-size:11px;line-height:1.55}
+.noticeBox b{color:#5d5135;font-size:12px}
+.submitBtn{width:min(760px,82%);height:54px;display:block;margin:24px auto 0;border:0;border-radius:11px;background:linear-gradient(90deg,#ff687f,#ff4e70);box-shadow:0 11px 23px rgba(255,78,112,.22);color:#fff;font-size:14px;font-weight:900;cursor:pointer;transition:transform .18s ease,box-shadow .18s ease}
+.submitBtn:hover{transform:translateY(-1px);box-shadow:0 14px 27px rgba(255,78,112,.27)}
+@media(max-width:760px){
+ .applySection{padding:54px 0 62px}
+ .applySection .sectionTitle h2{font-size:25px}
+ .applyCard{padding:18px 14px 21px;border-radius:17px}
+ .applyCard h3{font-size:18px;padding-bottom:14px}
+ .productStrip{grid-template-columns:repeat(2,1fr);padding:9px;gap:7px}
+ .productStrip button{min-height:68px;grid-template-columns:30px 1fr;padding:8px;gap:7px}
+ .productStrip button b{grid-column:2}
+ .productStrip img{width:30px;height:30px;grid-row:1/3}
+ .productStrip span{font-size:9px}
+ .pinRow{grid-template-columns:1fr 48px}
+ .pinRow input:first-child{grid-column:1/-1}
+ .accountGrid,.passwordGrid,.sumGrid{grid-template-columns:1fr}
+ .sumGrid{padding:11px 14px}
+ .sumGrid>div{padding:7px 0}
+ .sumGrid>div+div{border-left:0;border-top:1px solid #e1e8ee}
+ .submitBtn{width:100%;height:52px}
+}
