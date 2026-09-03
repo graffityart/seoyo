@@ -1,0 +1,27 @@
+.topbar{box-shadow:0 8px 24px rgba(25,50,75,.035)}
+.headerIn{min-height:72px}
+.logo{gap:8px}
+.logoSymbol{width:39px;height:39px;border-radius:50%;background:linear-gradient(145deg,#20b9f0,#0b80e8);box-shadow:0 7px 16px rgba(15,132,222,.18);font-size:19px;font-weight:900}
+.logoText{font-size:19px;font-weight:900;color:#18334d;letter-spacing:-.045em}
+.headerIn nav a{padding:0 10px;color:#26394d;font-size:12px;font-weight:800}
+.headerIn nav a:hover{background:#f3f8fd;color:#0b83df}
+.lookupBtn{padding:10px 17px;background:linear-gradient(135deg,#83caf2,#66b9ec);box-shadow:0 7px 16px rgba(67,165,224,.16);font-weight:900}
+.heroKsdl{position:relative;background:linear-gradient(180deg,#fff 0%,#fbfdff 100%)}
+.heroKsdl:before{content:"";position:absolute;right:-120px;top:80px;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(44,157,238,.09),rgba(44,157,238,0) 68%);pointer-events:none}
+.heroShell{min-height:500px;gap:38px;padding:36px 0}
+.heroCopyKsdl{position:relative;z-index:2}
+.heroCopyKsdl h1{color:#173450;font-size:44px;line-height:1.16;font-weight:900;letter-spacing:-.065em}
+.heroCopyKsdl p{max-width:430px;margin-top:20px;color:#617385;font-size:14px;line-height:1.85}
+.heroCopyKsdl a{min-height:50px;margin-top:24px;padding:0 25px;border-radius:14px;background:linear-gradient(135deg,#238ef7,#0878e9);box-shadow:0 12px 24px rgba(8,120,233,.22);font-size:14px;font-weight:900;transition:transform .18s ease,box-shadow .18s ease}
+.heroCopyKsdl a:hover{transform:translateY(-2px);box-shadow:0 16px 28px rgba(8,120,233,.25)}
+.orbitVisual{height:400px}
+.phoneMock{width:226px;height:336px;border:1px solid #e2eaf2;border-radius:32px;background:linear-gradient(180deg,#fff,#f9fbfe);box-shadow:0 26px 55px rgba(38,78,118,.14)}
+.phoneLogo{width:74px;height:74px;border-radius:22px;background:linear-gradient(135deg,#0d91e8,#4e6ff0);box-shadow:0 10px 22px rgba(34,117,225,.20);font-size:19px;font-weight:900}
+.phoneLine{width:62px;margin:19px 0;background:#dcebf7}
+.phoneMock b{color:#23425f;font-size:19px}
+.phoneMock small{max-width:155px;color:#9aa8b5;font-size:9px}
+.orbitCard{width:88px;height:88px;padding:10px;border:1px solid #e1eaf3;border-radius:20px;background:rgba(255,255,255,.97);box-shadow:0 15px 32px rgba(33,76,119,.12);transition:transform .2s ease}
+.orbitCard:hover{transform:translateY(-3px)}
+.oc1{left:10%;top:14%}.oc2{right:11%;top:12%}.oc3{left:7%;bottom:15%}.oc4{right:8%;bottom:15%}.oc5{right:25%;top:43%}
+@media(max-width:980px){.heroShell{gap:20px}.heroCopyKsdl h1{font-size:38px}}
+@media(max-width:760px){.headerIn{min-height:62px}.logoSymbol{width:33px;height:33px;font-size:16px}.logoText{font-size:16px}.heroKsdl:before{width:280px;height:280px;right:-120px;top:140px}.heroShell{padding:28px 0 10px}.heroCopyKsdl h1{font-size:30px;line-height:1.2}.heroCopyKsdl p{max-width:100%;font-size:13px;line-height:1.75}.heroCopyKsdl a{min-width:205px;justify-content:center}.orbitVisual{height:292px}.phoneMock{width:166px;height:240px;border-radius:23px}.phoneLogo{width:54px;height:54px;border-radius:16px;font-size:14px}.phoneMock b{font-size:15px}.orbitCard{width:68px;height:68px;padding:7px;border-radius:14px}.oc1{left:6%;top:14%}.oc2{right:6%;top:14%}.oc3{left:4%;bottom:10%}.oc4{right:4%;bottom:10%}.oc5{right:17%;top:46%}}
