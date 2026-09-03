@@ -1,4 +1,5 @@
-import { getActiveProducts } from '../lib/db';
+import { getActiveBanks, getActiveProducts } from '../lib/db';
+import ApplyForm from './components/ApplyForm';
 
 const productImages = {
   cultureland: 'https://www.ksdl.kr/images/hero-orbit/01_cultureland.png',
@@ -21,8 +22,10 @@ const steps = [
 export const dynamic = 'force-dynamic';
 
 export default async function Home(){
-  const products = await getActiveProducts();
-  const rates = products.map((p) => [p.name, `${Number(p.default_rate).toFixed(0)}%`, productImages[p.slug] || '', p.slug]);
+  const [products, banks] = await Promise.all([getActiveProducts(), getActiveBanks()]);
+  const safeProducts = products.map((p)=>({ id:Number(p.id), name:p.name, slug:p.slug, default_rate:Number(p.default_rate) }));
+  const safeBanks = banks.map((b)=>({ id:Number(b.id), name:b.name, code:b.code }));
+  const rates = safeProducts.map((p) => [p.name, `${Number(p.default_rate).toFixed(0)}%`, productImages[p.slug] || '', p.slug]);
   const now = new Date();
   const fmt = new Intl.DateTimeFormat('ko-KR',{timeZone:'Asia/Seoul',year:'2-digit',month:'2-digit',day:'2-digit',weekday:'short'}).format(now);
   return <div className="sayo" id="top">
@@ -37,7 +40,7 @@ export default async function Home(){
 
       <section className="rateSection" id="rates"><div className="shell"><div className="todayTitle"><span>금일</span><b>{fmt}</b><strong>매입률</strong></div><div className="rateGridKsdl">{rates.map(([name,rate,img])=><article key={name}><span className="rateLogo">{img && <img src={img} alt={name}/>}</span><b>{name}</b><strong>{rate}</strong><button>교환하기</button></article>)}</div><p className="dailyNote">✓ 매입률은 매일 업데이트 해드리고 있습니다</p></div></section>
 
-      <section id="apply" className="applySection"><div className="shell"><div className="sectionTitle"><p>상품권 현금교환</p><h2>상품권 정보를 입력하고 바로 신청하세요</h2><span>상품권 선택부터 PIN·계좌정보·조회 비밀번호까지 한 번에 접수할 수 있습니다.</span></div><div className="applyCard"><h3>상품권 현금교환</h3><label>상품권</label><div className="productStrip">{rates.map(([name,rate,img])=><button key={name}>{img && <img src={img} alt=""/>}<span>{name}</span><b>{rate}</b></button>)}</div><label>핀번호</label><div className="pinRow"><input placeholder="상품권 핀번호 입력"/><input placeholder="상품권 금액 입력"/><button>+</button></div><div className="quickAmounts"><span>빠른 금액</span>{['10,000','20,000','30,000','50,000','100,000'].map(v=><button key={v}>{v}</button>)}</div><div className="sumGrid"><div><span>총금액</span><strong>0원</strong></div><div><span>교환수수료</span><strong>이체수수료 500원 포함</strong></div></div><label>계좌정보</label><div className="accountGrid"><select defaultValue=""><option value="">은행 선택</option></select><input placeholder="계좌번호를 입력하세요."/><input placeholder="고객명(예금주)을 입력하세요."/></div><label>비밀번호</label><div className="passwordGrid"><input type="password" placeholder="접수 비밀번호(최대 10자리)"/><input type="password" placeholder="접수 비밀번호 확인"/></div><div className="noticeBox"><b>꼭! 알아두세요.</b><span>신청 건당 이체수수료 500원이 부과됩니다.</span><span>신청이 완료되면 취소 및 환불이 불가합니다.</span></div><button className="submitBtn" type="button">상품권 현금교환 신청</button></div></div></section>
+      <section id="apply" className="applySection"><div className="shell"><div className="sectionTitle"><p>상품권 현금교환</p><h2>상품권 정보를 입력하고 바로 신청하세요</h2><span>상품권 선택부터 PIN·계좌정보·조회 비밀번호까지 한 번에 접수할 수 있습니다.</span></div><ApplyForm products={safeProducts} banks={safeBanks}/></div></section>
 
       <section id="live" className="liveSection"><div className="shell"><div className="liveCard"><div className="liveHead"><div><span className="liveIcon">▣</span><div><h2>실시간 진행 현황</h2><p>최근 매입 현황입니다</p></div></div><div className="liveDate"><i></i>{fmt}</div></div><div className="liveEmpty">실시간 데이터는 주문 저장 기능 연결 후 이 영역에 표시됩니다.</div><time>사요 상품권 실시간 매입현황</time></div></div></section>
 
