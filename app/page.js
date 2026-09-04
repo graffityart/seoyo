@@ -39,7 +39,7 @@ export default async function Home(){
   const [products, banks, liveOrders, popups] = await Promise.all([getActiveProducts(), getActiveBanks(), getLiveOrders(settings.liveOrderLimit), getActivePopups(5)]);
   const safeProducts = products.map((p)=>({ id:Number(p.id), name:p.name, slug:p.slug, default_rate:Number(p.default_rate) }));
   const safeBanks = banks.map((b)=>({ id:Number(b.id), name:b.name, code:b.code }));
-  const safePopups = popups.map(p=>({id:Number(p.id),title:p.title||'',content:p.content||'',imageUrl:p.image_url||'',linkUrl:p.link_url||''}));
+  const safePopups = popups.map(p=>({id:Number(p.id),title:p.title||'',content:p.content||'',imageUrl:p.image_url||'',mobileImageUrl:p.mobile_image_url||'',linkUrl:p.link_url||''}));
   const rates = safeProducts.map((p) => [p.name, `${Number(p.default_rate).toFixed(0)}%`, productImages[p.slug] || '', p.slug]);
   const now = new Date();
   const fmt = new Intl.DateTimeFormat('ko-KR',{timeZone:'Asia/Seoul',year:'2-digit',month:'2-digit',day:'2-digit',weekday:'short'}).format(now);
