@@ -9,8 +9,10 @@ export async function PATCH(request,{params}){
   const {id}=await params;
   const body=await request.json();
   const status=String(body.status||'');
-  const paidAmount=Math.max(0,Number(body.paidAmount||0));
+  let paidAmount=Math.max(0,Number(body.paidAmount||0));
   if(!allowed.has(status)) return NextResponse.json({message:'처리상태를 확인해 주세요.'},{status:400});
+  if(status==='paid' && paidAmount<=0) return NextResponse.json({message:'입금완료 처리 시 실제 입금액을 입력해 주세요.'},{status:400});
+  if(status==='rejected') paidAmount=0;
   const sql=getDb();
   const current=await sql`SELECT status FROM orders WHERE id=${id} AND deleted_at IS NULL`;
   if(!current.length) return NextResponse.json({message:'신청건을 찾을 수 없습니다.'},{status:404});
