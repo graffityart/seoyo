@@ -6,13 +6,23 @@
 .applyCard{max-width:1080px;margin:0 auto;padding:30px 32px 34px;border:1px solid #e1e9f0;border-radius:22px;background:#fff;box-shadow:0 18px 44px rgba(34,66,96,.08)}
 .applyCard h3{margin:0 0 22px;padding-bottom:18px;border-bottom:1px solid #edf1f5;color:#1e3448;font-size:21px;font-weight:900}
 .applyCard label{margin:21px 0 9px;color:#354b5e;font-size:12px;font-weight:900}
-.productStrip{grid-template-columns:repeat(3,1fr);gap:9px;padding:14px;border:1px solid #edf1f5;border-radius:15px;background:#f8fafc}
-.productStrip button{min-height:64px;display:grid;grid-template-columns:36px 1fr auto;align-items:center;gap:9px;padding:9px 12px;border:1px solid #e1e8ee;border-radius:10px;background:#fff;text-align:left;transition:border-color .18s ease,box-shadow .18s ease,transform .18s ease}
-.productStrip button:hover{transform:translateY(-1px);border-color:#94cdef;box-shadow:0 7px 16px rgba(38,116,169,.08)}
-.productStrip button:first-child{border-color:#ef7990;background:#fffafb;box-shadow:0 0 0 2px rgba(239,121,144,.06)}
-.productStrip img{width:34px;height:34px;margin:0;object-fit:contain}
-.productStrip span{margin:0;color:#415363;font-size:10px;font-weight:700;line-height:1.35}
-.productStrip b{color:#1489d0;font-size:11px;font-weight:900}
+
+/* Gift card selector */
+.productStrip{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding:14px;border:1px solid #e8eef4;border-radius:22px;background:linear-gradient(180deg,#fbfdff 0%,#f6f9fc 100%)}
+.productStrip button{position:relative;isolation:isolate;overflow:hidden;display:grid;grid-template-columns:54px minmax(0,1fr);align-items:center;min-height:66px;gap:14px;padding:8px 18px;border:1px solid #dfe8ef;border-radius:999px;background:linear-gradient(180deg,#ffffff 0%,#fbfdff 100%);box-shadow:0 5px 14px rgba(30,66,92,.05),inset 0 1px 0 rgba(255,255,255,.95);text-align:left;cursor:pointer;transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease,color .22s ease,background .28s ease}
+.productStrip button:hover{transform:translateY(-1px);border-color:#b8d8ec;box-shadow:0 8px 20px rgba(28,91,132,.09),inset 0 1px 0 rgba(255,255,255,1)}
+.productStrip button:active{transform:translateY(1px);box-shadow:0 3px 9px rgba(28,91,132,.07)}
+.productStrip button:first-child{border-color:#dfe8ef;background:linear-gradient(180deg,#ffffff 0%,#fbfdff 100%);box-shadow:0 5px 14px rgba(30,66,92,.05),inset 0 1px 0 rgba(255,255,255,.95)}
+.productStrip button::after{content:none!important}
+.productStrip button::before{content:'';position:absolute;z-index:-1;top:-80%;left:-45%;width:36%;height:260%;transform:rotate(24deg) translateX(-260%);background:linear-gradient(90deg,transparent,rgba(255,255,255,.78),transparent);opacity:0;pointer-events:none}
+.productStrip button[aria-pressed="true"]{border-color:#39a8f1;background:linear-gradient(135deg,#36c6f6 0%,#1f95ee 48%,#246fe9 100%);box-shadow:0 8px 20px rgba(27,130,226,.28),inset 0 1px 0 rgba(255,255,255,.55),inset 0 -1px 0 rgba(0,72,170,.18);color:#fff;transform:translateY(-1px)}
+.productStrip button[aria-pressed="true"]::before{opacity:1;animation:productGloss 2.7s ease-in-out infinite}
+@keyframes productGloss{0%,52%{transform:rotate(24deg) translateX(-260%);opacity:0}62%{opacity:.9}82%{transform:rotate(24deg) translateX(620%);opacity:.15}100%{transform:rotate(24deg) translateX(620%);opacity:0}}
+.productStrip img{display:block;width:46px;height:46px;margin:0;object-fit:contain;justify-self:center;filter:drop-shadow(0 2px 3px rgba(22,52,78,.08))}
+.productStrip span{display:flex;align-items:center;min-width:0;min-height:46px;margin:0;color:#24384a;font-size:13px;font-weight:800;line-height:1.35;letter-spacing:-.025em;word-break:keep-all;text-align:left}
+.productStrip button[aria-pressed="true"] span{color:#fff;text-shadow:0 1px 1px rgba(0,69,153,.18)}
+.productStrip b{display:none!important}
+
 .pinRow{grid-template-columns:1.35fr .85fr 50px;gap:9px}
 .pinRow input,.accountGrid input,.accountGrid select,.passwordGrid input{height:47px;padding:0 13px;border:1px solid #dce4eb;border-radius:9px;color:#263b4d;background:#fff;font-size:12px;outline:none;transition:border-color .18s ease,box-shadow .18s ease}
 .pinRow input:focus,.accountGrid input:focus,.accountGrid select:focus,.passwordGrid input:focus{border-color:#69b9ec;box-shadow:0 0 0 3px rgba(34,151,225,.09)}
@@ -34,16 +44,16 @@
 .noticeBox b{color:#5d5135;font-size:12px}
 .submitBtn{width:min(760px,82%);height:54px;display:block;margin:24px auto 0;border:0;border-radius:11px;background:linear-gradient(90deg,#ff687f,#ff4e70);box-shadow:0 11px 23px rgba(255,78,112,.22);color:#fff;font-size:14px;font-weight:900;cursor:pointer;transition:transform .18s ease,box-shadow .18s ease}
 .submitBtn:hover{transform:translateY(-1px);box-shadow:0 14px 27px rgba(255,78,112,.27)}
+
 @media(max-width:760px){
  .applySection{padding:54px 0 62px}
  .applySection .sectionTitle h2{font-size:25px}
  .applyCard{padding:18px 14px 21px;border-radius:17px}
  .applyCard h3{font-size:18px;padding-bottom:14px}
- .productStrip{grid-template-columns:repeat(2,1fr);padding:9px;gap:7px}
- .productStrip button{min-height:68px;grid-template-columns:30px 1fr;padding:8px;gap:7px}
- .productStrip button b{grid-column:2}
- .productStrip img{width:30px;height:30px;grid-row:1/3}
- .productStrip span{font-size:9px}
+ .productStrip{grid-template-columns:repeat(2,minmax(0,1fr));padding:8px;gap:8px;border-radius:18px}
+ .productStrip button{grid-template-columns:42px minmax(0,1fr);min-height:58px;gap:8px;padding:6px 10px;border-radius:999px}
+ .productStrip img{width:38px;height:38px}
+ .productStrip span{min-height:38px;font-size:10.5px;line-height:1.28}
  .pinRow{grid-template-columns:1fr 48px}
  .pinRow input:first-child{grid-column:1/-1}
  .accountGrid,.passwordGrid,.sumGrid{grid-template-columns:1fr}
@@ -52,3 +62,10 @@
  .sumGrid>div+div{border-left:0;border-top:1px solid #e1e8ee}
  .submitBtn{width:100%;height:52px}
 }
+@media(max-width:390px){
+ .productStrip{gap:6px;padding:7px}
+ .productStrip button{grid-template-columns:36px minmax(0,1fr);gap:6px;min-height:54px;padding:6px 8px}
+ .productStrip img{width:34px;height:34px}
+ .productStrip span{min-height:34px;font-size:9.6px}
+}
+@media(prefers-reduced-motion:reduce){.productStrip button,.productStrip button::before{transition:none!important;animation:none!important}}
