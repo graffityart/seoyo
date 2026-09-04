@@ -58,8 +58,8 @@ export default function OrderLookup() {
       </div>
       <div className={styles.amountGrid}>
         <div><span>신청금액</span><strong>{result.requestedAmount.toLocaleString()}원</strong></div>
-        <div><span>예상입금</span><strong>{result.expectedAmount.toLocaleString()}원</strong></div>
-        <div><span>실제입금</span><strong>{result.paidAmount.toLocaleString()}원</strong></div>
+        <div><span>입금 금액</span><strong>{result.expectedAmount.toLocaleString()}원</strong></div>
+        <div><span>실제 입금액</span><strong>{result.paidAmount.toLocaleString()}원</strong></div>
       </div>
       <div className={styles.items}>
         {result.items.map((item, index)=><div className={styles.item} key={`${item.productName}-${index}`}>
