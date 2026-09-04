@@ -33,10 +33,17 @@ export default function SitePopups({ popups=[] }){
     setHiddenIds(prev=>[...prev,popup.id]);
   }
 
+  const imageNode = popup.imageUrl ? (
+    <picture>
+      {popup.mobileImageUrl && <source media="(max-width: 640px)" srcSet={popup.mobileImageUrl}/>} 
+      <img src={popup.imageUrl} alt={popup.title||'팝업 이미지'}/>
+    </picture>
+  ) : popup.mobileImageUrl ? <img src={popup.mobileImageUrl} alt={popup.title||'팝업 이미지'}/> : null;
+
   return <div className={styles.overlay} role="dialog" aria-modal="true" aria-label={popup.title||'공지 팝업'}>
     <div className={styles.popup}>
       <button className={styles.closeX} type="button" onClick={close} aria-label="닫기">×</button>
-      {popup.imageUrl && <div className={styles.imageWrap}>{popup.linkUrl ? <a href={popup.linkUrl}><img src={popup.imageUrl} alt={popup.title||'팝업 이미지'}/></a> : <img src={popup.imageUrl} alt={popup.title||'팝업 이미지'}/>}</div>}
+      {imageNode && <div className={styles.imageWrap}>{popup.linkUrl ? <a href={popup.linkUrl}>{imageNode}</a> : imageNode}</div>}
       <div className={styles.body}>
         {popup.title && <h2>{popup.title}</h2>}
         {popup.content && <p>{popup.content}</p>}
