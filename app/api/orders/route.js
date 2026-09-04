@@ -1,3 +1,4 @@
+import crypto from 'crypto';
 import { NextResponse } from 'next/server';
 import { getDb, getServiceSettings } from '../../../lib/db';
 import { encryptText, hashPassword } from '../../../lib/secure';
@@ -6,6 +7,7 @@ export const dynamic = 'force-dynamic';
 
 const MAX_ITEMS_PER_ORDER = 20;
 const MAX_PIN_LENGTH = 64;
+const BLOCKING_ORDER_STATUSES = ['received', 'reviewing', 'checking', 'completed', 'paid'];
 
 function makeOrderNo() {
   const d = new Date();
@@ -13,6 +15,10 @@ function makeOrderNo() {
   const stamp = `${d.getUTCFullYear()}${p(d.getUTCMonth()+1)}${p(d.getUTCDate())}${p(d.getUTCHours())}${p(d.getUTCMinutes())}${p(d.getUTCSeconds())}`;
   const rand = crypto.randomUUID().replace(/-/g,'').slice(0,8).toUpperCase();
   return `${stamp}${rand}`;
+}
+
+function makePinHash(productId, pin) {
+  return crypto.createHash('sha256').update(`${productId}:${pin}`, 'utf8').digest('hex');
 }
 
 export async function POST(request) {
@@ -73,9 +79,24 @@ export async function POST(request) {
       }
       const rate = Number(p.default_rate);
       const itemExpected = Math.floor(face * rate / 100);
+      const pinHash = makePinHash(Number(p.id), pin);
       requested += face;
       expectedGross += itemExpected;
-      normalized.push({ productId: Number(p.id), pin, face, rate, itemExpected });
+      normalized.push({ productId: Number(p.id), pin, pinHash, face, rate, itemExpected });
+    }
+
+    const pinHashes = normalized.map((item) => item.pinHash);
+    const duplicates = await sql`
+      SELECT oi.pin_hash
+      FROM order_items oi
+      JOIN orders o ON o.id = oi.order_id
+      WHERE oi.pin_hash = ANY(${pinHashes})
+        AND o.deleted_at IS NULL
+        AND o.status = ANY(${BLOCKING_ORDER_STATUSES})
+      LIMIT 1
+    `;
+    if (duplicates.length) {
+      return NextResponse.json({ message: '이미 정상 접수된 상품권 PIN입니다. 기존 접수내역을 확인해 주세요.' }, { status: 409 });
     }
 
     if (requested < settings.minimumOrderAmount) {
@@ -99,8 +120,8 @@ export async function POST(request) {
 
     for (const item of normalized) {
       await sql`
-        INSERT INTO order_items (order_id, product_id, pin_encrypted, pin_last4, face_value, rate_percent, expected_amount, item_status)
-        VALUES (${orderId}, ${item.productId}, ${encryptText(item.pin)}, ${item.pin.slice(-4)}, ${item.face}, ${item.rate}, ${item.itemExpected}, 'received')
+        INSERT INTO order_items (order_id, product_id, pin_encrypted, pin_hash, pin_last4, face_value, rate_percent, expected_amount, item_status)
+        VALUES (${orderId}, ${item.productId}, ${encryptText(item.pin)}, ${item.pinHash}, ${item.pin.slice(-4)}, ${item.face}, ${item.rate}, ${item.itemExpected}, 'received')
       `;
     }
     await sql`INSERT INTO order_history (order_id, new_status, changed_by, reason) VALUES (${orderId}, 'received', 'system', '신규 상품권 교환 신청')`;
