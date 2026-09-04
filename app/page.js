@@ -1,6 +1,7 @@
-import { getActiveBanks, getActiveProducts, getLiveOrders, getServiceSettings } from '../lib/db';
+import { getActiveBanks, getActiveProducts, getLiveOrders, getServiceSettings, getActivePopups } from '../lib/db';
 import ApplyForm from './components/ApplyForm';
 import OrderLookup from './components/OrderLookup';
+import SitePopups from './components/SitePopups';
 
 const productImages = {
   cultureland: 'https://www.ksdl.kr/images/hero-orbit/01_cultureland.png',
@@ -35,14 +36,16 @@ export const dynamic = 'force-dynamic';
 
 export default async function Home(){
   const settings = await getServiceSettings();
-  const [products, banks, liveOrders] = await Promise.all([getActiveProducts(), getActiveBanks(), getLiveOrders(settings.liveOrderLimit)]);
+  const [products, banks, liveOrders, popups] = await Promise.all([getActiveProducts(), getActiveBanks(), getLiveOrders(settings.liveOrderLimit), getActivePopups(5)]);
   const safeProducts = products.map((p)=>({ id:Number(p.id), name:p.name, slug:p.slug, default_rate:Number(p.default_rate) }));
   const safeBanks = banks.map((b)=>({ id:Number(b.id), name:b.name, code:b.code }));
+  const safePopups = popups.map(p=>({id:Number(p.id),title:p.title||'',content:p.content||'',imageUrl:p.image_url||'',linkUrl:p.link_url||''}));
   const rates = safeProducts.map((p) => [p.name, `${Number(p.default_rate).toFixed(0)}%`, productImages[p.slug] || '', p.slug]);
   const now = new Date();
   const fmt = new Intl.DateTimeFormat('ko-KR',{timeZone:'Asia/Seoul',year:'2-digit',month:'2-digit',day:'2-digit',weekday:'short'}).format(now);
   const timeFmt = new Intl.DateTimeFormat('ko-KR',{timeZone:'Asia/Seoul',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false});
   return <div className="sayo" id="top">
+    <SitePopups popups={safePopups}/>
     <header className="topbar"><div className="shell headerIn"><a className="logo" href="#top"><span className="logoSymbol">S</span><span className="logoText">사요 상품권</span></a><nav><a href="#lookup">내주문조회</a><a href="#rates">상품권매입시세</a><a href="#live">실시간매입현황</a><a href="#guide">이용방법</a><a href="#faq">자주묻는질문</a><a href="#customer">고객센터</a></nav><a className="lookupBtn" href="#lookup">내주문조회</a></div></header>
     <main>
       <section className="heroKsdl"><div className="shell heroShell"><div className="heroCopyKsdl"><h1>쉽고 빠르다! 상품권 서비스</h1><p>고객님의 상품권을 빠르고 간편하게 확인합니다.<br/>별도의 복잡한 절차 없이 신청할 수 있습니다.</p><a href="#apply">상품권 현금교환</a></div><div className="orbitVisual"><div className="phoneMock"><div className="phoneLogo">SAYO</div><div className="phoneLine"></div><b>사요 상품권</b><small>배너 이미지는 신규 이미지로 교체 예정</small></div>{rates.slice(0,5).map((r,i)=><span className={`orbitCard oc${i+1}`} key={r[0]}>{r[2] && <img src={r[2]} alt={r[0]}/>}</span>)}</div></div></section>
