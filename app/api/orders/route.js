@@ -4,6 +4,9 @@ import { encryptText, hashPassword } from '../../../lib/secure';
 
 export const dynamic = 'force-dynamic';
 
+const MAX_ITEMS_PER_ORDER = 20;
+const MAX_PIN_LENGTH = 64;
+
 function makeOrderNo() {
   const d = new Date();
   const p = (n, w=2) => String(n).padStart(w, '0');
@@ -16,42 +19,84 @@ export async function POST(request) {
   try {
     const body = await request.json();
     const { customerName, phone, bankId, accountNumber, password, items } = body || {};
+
     if (!customerName || !phone || !bankId || !accountNumber || !password || !Array.isArray(items) || !items.length) {
       return NextResponse.json({ message: '필수 신청정보를 확인해 주세요.' }, { status: 400 });
     }
-    if (String(password).length > 10) return NextResponse.json({ message: '조회 비밀번호는 최대 10자리입니다.' }, { status: 400 });
-    const [settings] = await Promise.all([getServiceSettings()]);
+    if (items.length > MAX_ITEMS_PER_ORDER) {
+      return NextResponse.json({ message: `상품권은 한 번에 최대 ${MAX_ITEMS_PER_ORDER}개까지 접수할 수 있습니다.` }, { status: 400 });
+    }
+    if (String(password).length > 10) {
+      return NextResponse.json({ message: '조회 비밀번호는 최대 10자리입니다.' }, { status: 400 });
+    }
+
+    const customer = String(customerName).trim();
+    if (!customer || customer.length > 30) {
+      return NextResponse.json({ message: '고객명(예금주)을 확인해 주세요.' }, { status: 400 });
+    }
+
+    const settings = await getServiceSettings();
     const sql = getDb();
-    const ids = items.map(x => Number(x.productId)).filter(Boolean);
+    const numericBankId = Number(bankId);
+    if (!Number.isInteger(numericBankId) || numericBankId <= 0) {
+      return NextResponse.json({ message: '은행을 다시 선택해 주세요.' }, { status: 400 });
+    }
+
+    const banks = await sql`SELECT id FROM banks WHERE id=${numericBankId} AND is_active=true LIMIT 1`;
+    if (!banks.length) {
+      return NextResponse.json({ message: '현재 이용할 수 없는 은행입니다. 다시 선택해 주세요.' }, { status: 400 });
+    }
+
+    const ids = [...new Set(items.map(x => Number(x.productId)).filter(Boolean))];
     const products = await sql`SELECT id, name, slug, default_rate FROM products WHERE is_active=true AND id = ANY(${ids})`;
     const map = new Map(products.map(p => [Number(p.id), p]));
+    const seenPins = new Set();
     let requested = 0;
     let expectedGross = 0;
     const normalized = [];
+
     for (const item of items) {
       const p = map.get(Number(item.productId));
       const face = Number(item.faceValue);
       const pin = String(item.pin || '').replace(/\s|-/g,'');
-      if (!p || !pin || !Number.isInteger(face) || face <= 0) return NextResponse.json({ message: '상품권 정보를 다시 확인해 주세요.' }, { status: 400 });
-      if (p.slug === 'lotte-mobile' && !pin.startsWith('23')) return NextResponse.json({ message: "23으로 시작하는 '롯데 모바일 교환권'만 매입합니다" }, { status: 400 });
+      if (!p || !pin || pin.length > MAX_PIN_LENGTH || !Number.isInteger(face) || face <= 0) {
+        return NextResponse.json({ message: '상품권 정보를 다시 확인해 주세요.' }, { status: 400 });
+      }
+      const duplicateKey = `${p.id}:${pin}`;
+      if (seenPins.has(duplicateKey)) {
+        return NextResponse.json({ message: '같은 상품권 PIN 번호가 중복 입력되어 있습니다.' }, { status: 400 });
+      }
+      seenPins.add(duplicateKey);
+
+      if (p.slug === 'lotte-mobile' && !pin.startsWith('23')) {
+        return NextResponse.json({ message: "23으로 시작하는 '롯데 모바일 교환권'만 매입합니다" }, { status: 400 });
+      }
       const rate = Number(p.default_rate);
       const itemExpected = Math.floor(face * rate / 100);
-      requested += face; expectedGross += itemExpected;
+      requested += face;
+      expectedGross += itemExpected;
       normalized.push({ productId: Number(p.id), pin, face, rate, itemExpected });
     }
-    if (requested < settings.minimumOrderAmount) return NextResponse.json({ message: `최소 판매금액은 ${settings.minimumOrderAmount.toLocaleString()}원 이상 입니다` }, { status: 400 });
+
+    if (requested < settings.minimumOrderAmount) {
+      return NextResponse.json({ message: `최소 판매금액은 ${settings.minimumOrderAmount.toLocaleString()}원 이상 입니다` }, { status: 400 });
+    }
+
     const expected = Math.max(0, expectedGross - settings.transferFee);
     const orderNo = makeOrderNo();
     const phoneDigits = String(phone).replace(/[^0-9]/g,'');
     const accountDigits = String(accountNumber).replace(/[^0-9]/g,'');
-    if (phoneDigits.length < 10 || accountDigits.length < 8) return NextResponse.json({ message: '연락처 또는 계좌번호를 확인해 주세요.' }, { status: 400 });
+    if (phoneDigits.length < 10 || phoneDigits.length > 11 || accountDigits.length < 8 || accountDigits.length > 20) {
+      return NextResponse.json({ message: '연락처 또는 계좌번호를 확인해 주세요.' }, { status: 400 });
+    }
 
     const inserted = await sql`
       INSERT INTO orders (order_no, customer_name, phone_encrypted, phone_last4, bank_id, account_number_encrypted, account_holder, requested_amount, expected_amount, status, lookup_password_hash)
-      VALUES (${orderNo}, ${String(customerName).trim()}, ${encryptText(phoneDigits)}, ${phoneDigits.slice(-4)}, ${Number(bankId)}, ${encryptText(accountDigits)}, ${String(customerName).trim()}, ${requested}, ${expected}, 'received', ${hashPassword(password)})
+      VALUES (${orderNo}, ${customer}, ${encryptText(phoneDigits)}, ${phoneDigits.slice(-4)}, ${numericBankId}, ${encryptText(accountDigits)}, ${customer}, ${requested}, ${expected}, 'received', ${hashPassword(password)})
       RETURNING id
     `;
     const orderId = inserted[0].id;
+
     for (const item of normalized) {
       await sql`
         INSERT INTO order_items (order_id, product_id, pin_encrypted, pin_last4, face_value, rate_percent, expected_amount, item_status)

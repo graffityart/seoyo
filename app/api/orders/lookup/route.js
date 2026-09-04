@@ -23,7 +23,7 @@ export async function POST(request) {
     if (!orderNo || !password) {
       return NextResponse.json({ message: '접수번호와 조회 비밀번호를 입력해 주세요.' }, { status: 400 });
     }
-    if (orderNo.length > 40 || password.length > 10) {
+    if (!/^[A-Z0-9]{22}$/.test(orderNo) || password.length > 10) {
       return NextResponse.json({ message: '조회 정보를 다시 확인해 주세요.' }, { status: 400 });
     }
 
