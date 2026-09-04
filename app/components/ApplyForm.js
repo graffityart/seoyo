@@ -55,7 +55,7 @@ export default function ApplyForm({ products, banks, settings }) {
     <div className="pinRow"><input value={pin} onChange={(e)=>setPin(e.target.value)} placeholder="상품권 핀번호 입력"/><input value={faceValue} onChange={(e)=>setFaceValue(e.target.value.replace(/[^0-9]/g,''))} placeholder="상품권 금액 입력"/><button type="button" onClick={()=>addItem()}>+</button></div>
     <div className="quickAmounts"><span>빠른 금액</span>{[10000,20000,30000,50000,100000].map(v=><button type="button" key={v} onClick={()=>addItem(v)}>{v.toLocaleString()}</button>)}</div>
     {items.length>0 && <div className="noticeBox"><b>추가된 상품권</b>{items.map((x,i)=><span key={i}>{x.name} · {x.faceValue.toLocaleString()}원 · PIN 끝자리 {x.pin.slice(-4)}</span>)}</div>}
-    <div className="sumGrid"><div><span>총금액</span><strong>{total.toLocaleString()}원</strong></div><div><span>예상입금</span><strong>{expected.toLocaleString()}원</strong></div></div>
+    <div className="sumGrid"><div><span>총금액</span><strong>{total.toLocaleString()}원</strong></div><div><span>입금 금액</span><strong>{expected.toLocaleString()}원</strong></div></div>
     <label>계좌정보</label>
     <div className="accountGrid"><select value={bankId} onChange={(e)=>setBankId(e.target.value)}><option value="">은행 선택</option>{banks.map((b)=><option key={b.id} value={b.id}>{b.name}</option>)}</select><input value={accountNumber} onChange={(e)=>setAccountNumber(e.target.value.replace(/[^0-9]/g,''))} placeholder="계좌번호를 입력하세요."/><input value={customerName} onChange={(e)=>setCustomerName(e.target.value)} placeholder="고객명(예금주)을 입력하세요."/></div>
     <label>연락처</label><div className="passwordGrid"><input value={phone} onChange={(e)=>setPhone(e.target.value.replace(/[^0-9]/g,''))} placeholder="휴대폰 번호를 입력하세요."/></div>
