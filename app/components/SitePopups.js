@@ -41,14 +41,14 @@ export default function SitePopups({ popups=[] }){
   ) : popup.mobileImageUrl ? <img src={popup.mobileImageUrl} alt={popup.title||'팝업 이미지'}/> : null;
 
   return <div className={styles.overlay} role="dialog" aria-modal="true" aria-label={popup.title||'공지 팝업'}>
-    <div className={styles.popup}>
+    <div className={`${styles.popup} ${imageNode ? styles.imagePopup : ''}`}>
       <button className={styles.closeX} type="button" onClick={close} aria-label="닫기">×</button>
       {imageNode && <div className={styles.imageWrap}>{popup.linkUrl ? <a href={popup.linkUrl}>{imageNode}</a> : imageNode}</div>}
-      <div className={styles.body}>
+      {!imageNode && <div className={styles.body}>
         {popup.title && <h2>{popup.title}</h2>}
         {popup.content && <p>{popup.content}</p>}
         {popup.linkUrl && <a className={styles.linkBtn} href={popup.linkUrl}>자세히 보기</a>}
-      </div>
+      </div>}
       <div className={styles.footer}>
         <button type="button" onClick={hideToday}>오늘 하루 보지 않기</button>
         <button type="button" onClick={close}>닫기</button>
