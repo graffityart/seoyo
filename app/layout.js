@@ -4,6 +4,7 @@ import './rate-polish.css';
 import './apply-polish.css';
 import './content-polish.css';
 import './product-selector-polish.css';
+import './layout-balance.css';
 
 export const metadata = {
   metadataBase: new URL('https://seoyo.kr'),
