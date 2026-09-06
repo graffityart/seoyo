@@ -3,7 +3,7 @@
   .shell{width:min(1280px,calc(100% - 64px))}
   .headerIn{min-height:70px}
   .logoText{font-size:20px}.headerIn nav a{font-size:13px;padding:0 12px}.lookupBtn{font-size:12px;padding:11px 19px}
-  .heroBanner img{width:100%;max-height:510px;object-fit:cover;object-position:center}
+  .heroBanner{height:auto;overflow:hidden}.heroBanner a,.heroBanner picture{display:block;width:100%;height:auto}.heroBanner img{display:block;width:100%;height:auto;max-height:none;object-fit:contain;object-position:center;margin:0 auto}
   .rateSection{padding:48px 0 58px}.todayTitle{margin-bottom:24px}.todayTitle b,.todayTitle strong{font-size:21px}
   .rateGridKsdl{gap:14px}.rateGridKsdl article{min-height:132px;padding:17px 17px 15px}.rateGridKsdl article>b{font-size:17px}.rateLogo{width:72px;height:72px}.rateGridKsdl article>strong{font-size:17px}
   .applySection{padding:72px 0 76px}.applySection>.shell{width:min(1120px,calc(100% - 64px))}.sectionTitle{margin-bottom:28px}.sectionTitle>p{font-size:13px}.sectionTitle h2{font-size:32px;line-height:1.25}.applyCard{padding:32px;border-radius:22px}.applyCard>h3{font-size:23px}.productStrip button{min-height:96px}.productStrip>button>span{font-size:14px}
@@ -14,11 +14,11 @@
   footer{padding-top:52px}.footerGrid{width:min(1120px,100%);margin:auto}.footerGrid h3{font-size:18px}.footerGrid>div>p,.business{font-size:11px}
 }
 @media(min-width:761px) and (max-width:980px){
-  .shell{width:calc(100% - 40px)}.heroBanner img{max-height:440px;object-fit:cover}.rateGridKsdl{grid-template-columns:repeat(3,1fr)}.applySection>.shell,.lookupSection>.shell,.liveSection>.shell,.guideSection>.shell,.faqKsdl>.shell{width:min(900px,calc(100% - 40px))}
+  .shell{width:calc(100% - 40px)}.heroBanner{height:auto}.heroBanner img{display:block;width:100%;height:auto;max-height:none;object-fit:contain}.rateGridKsdl{grid-template-columns:repeat(3,1fr)}.applySection>.shell,.lookupSection>.shell,.liveSection>.shell,.guideSection>.shell,.faqKsdl>.shell{width:min(900px,calc(100% - 40px))}
 }
 @media(max-width:760px){
   .shell{width:calc(100% - 24px)}.topbar{position:sticky}.headerIn{min-height:60px}.lookupBtn{padding:9px 13px;font-size:10px}
-  .heroBanner img{width:100%;max-height:none;object-fit:contain}
+  .heroBanner img{width:100%;height:auto;max-height:none;object-fit:contain}
   .rateSection{padding:30px 0 38px}.todayTitle{margin-bottom:14px}.todayTitle b{font-size:14px}.todayTitle strong{font-size:15px}
   .applySection{padding:48px 0 52px}.sectionTitle{margin-bottom:22px}.sectionTitle>p{font-size:11px}.sectionTitle h2{margin-top:6px;font-size:24px;line-height:1.3}.applyCard{padding:18px 13px;border-radius:17px}.applyCard>h3{font-size:20px}
   .lookupSection{padding:48px 0 18px}.lookupSection .sectionTitle h2{font-size:23px}.lookupSection .sectionTitle span{display:block;font-size:11px;line-height:1.6}
