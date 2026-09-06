@@ -28,6 +28,18 @@
 .pinRow input:focus,.accountGrid input:focus,.accountGrid select:focus,.passwordGrid input:focus{border-color:#69b9ec;box-shadow:0 0 0 3px rgba(34,151,225,.09)}
 .pinRow input::placeholder,.accountGrid input::placeholder,.passwordGrid input::placeholder{color:#a4afb8}
 .pinRow>button{border:0;border-radius:10px;background:linear-gradient(180deg,#24a7e8,#1286d0);box-shadow:0 7px 15px rgba(20,139,211,.18);color:#fff;font-size:21px;font-weight:800}
+
+/* Primary add-gift-card CTA */
+.pinAmountRow{grid-template-columns:minmax(0,1fr) 180px;gap:10px;align-items:stretch}
+.pinAmountRow button{position:relative;isolation:isolate;overflow:hidden;min-height:48px;padding:0 20px;border:1px solid rgba(0,119,219,.18);border-radius:12px;background:linear-gradient(135deg,#21b8ef 0%,#139be8 46%,#0879e6 100%);box-shadow:0 9px 20px rgba(9,133,222,.22),inset 0 1px 0 rgba(255,255,255,.34),inset 0 -1px 0 rgba(0,74,162,.15);color:#fff;font-size:13px;font-weight:900;letter-spacing:-.02em;cursor:pointer;transition:transform .18s ease,box-shadow .18s ease,filter .18s ease}
+.pinAmountRow button::before{content:'＋';display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;margin-right:7px;border-radius:50%;background:rgba(255,255,255,.18);box-shadow:inset 0 0 0 1px rgba(255,255,255,.22);font-size:15px;font-weight:900;vertical-align:-1px}
+.pinAmountRow button::after{content:'';position:absolute;z-index:-1;top:-80%;left:-45%;width:34%;height:260%;transform:rotate(24deg) translateX(-280%);background:linear-gradient(90deg,transparent,rgba(255,255,255,.78),transparent);opacity:0;pointer-events:none}
+.pinAmountRow button:hover{transform:translateY(-1px);filter:brightness(1.02);box-shadow:0 12px 25px rgba(9,133,222,.28),inset 0 1px 0 rgba(255,255,255,.38)}
+.pinAmountRow button:hover::after{opacity:1;animation:addButtonShine .8s ease}
+.pinAmountRow button:active{transform:translateY(1px) scale(.995);box-shadow:0 5px 12px rgba(9,133,222,.19),inset 0 1px 0 rgba(255,255,255,.3)}
+.pinAmountRow button:focus-visible{outline:3px solid rgba(29,157,235,.18);outline-offset:3px}
+@keyframes addButtonShine{0%{transform:rotate(24deg) translateX(-280%)}100%{transform:rotate(24deg) translateX(720%)}}
+
 .quickAmounts{gap:7px;margin-top:10px}
 .quickAmounts span{color:#7d8994;font-size:10px;font-weight:700}
 .quickAmounts button{padding:6px 10px;border:1px solid #dfe6ec;border-radius:7px;background:#fff;color:#435565;font-size:10px;font-weight:700;cursor:pointer}
@@ -56,6 +68,8 @@
  .productStrip span{min-height:38px;font-size:10.5px;line-height:1.28}
  .pinRow{grid-template-columns:1fr 48px}
  .pinRow input:first-child{grid-column:1/-1}
+ .pinAmountRow{grid-template-columns:1fr;gap:8px}
+ .pinAmountRow button{min-height:50px;width:100%;font-size:14px;border-radius:12px}
  .accountGrid,.passwordGrid,.sumGrid{grid-template-columns:1fr}
  .sumGrid{padding:11px 14px}
  .sumGrid>div{padding:7px 0}
@@ -68,4 +82,4 @@
  .productStrip img{width:34px;height:34px}
  .productStrip span{min-height:34px;font-size:9.6px}
 }
-@media(prefers-reduced-motion:reduce){.productStrip button,.productStrip button::before{transition:none!important;animation:none!important}}
+@media(prefers-reduced-motion:reduce){.productStrip button,.productStrip button::before,.pinAmountRow button,.pinAmountRow button::after{transition:none!important;animation:none!important}}
