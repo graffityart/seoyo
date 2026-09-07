@@ -9,7 +9,7 @@ export default function HomeStatusBoard({orders=[],notices=[]}){
   const loopRows=rows.length>4?[...rows,...rows]:rows;
   return <section id="live" className="statusBoardSection"><div className="shell statusBoardGrid">
     <article className="statusBoardCard liveBoardCard">
-      <div className="statusBoardHead"><div className="statusBoardTitle"><span className="statusBoardIcon">◷</span><div><h2>실시간 매입 진행현황</h2><p>최근 매입현황입니다.</p></div></div><span className="statusArrow" aria-hidden="true">→</span></div>
+      <div className="statusBoardHead"><div className="statusBoardTitle"><span className="statusBoardIcon">◷</span><div><h2>실시간 매입 진행현황</h2><p>최근 매입현황입니다.</p></div></div><Link className="statusArrow" href="/live" aria-label="실시간 매입 현황 전체보기">→</Link></div>
       {rows.length?<div className="liveTicker"><div className={rows.length>4?'liveTickerTrack is-moving':'liveTickerTrack'}>{loopRows.map((row,index)=><div className="liveTickerRow" key={`${row.key}-${index}`}><span className="tickerLogo">{row.imageUrl?<img src={row.imageUrl} alt=""/>:'🎫'}</span><div className="tickerMain"><strong>{row.name} {row.count}건</strong><span>{maskName(row.customer)}</span></div><span className={`tickerStatus ${row.statusClass}`}>{row.status}</span></div>)}</div></div>:<div className="statusEmpty">아직 접수된 매입 내역이 없습니다.</div>}
     </article>
     <article className="statusBoardCard noticeBoardCard">
