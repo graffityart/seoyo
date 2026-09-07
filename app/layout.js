@@ -6,6 +6,7 @@ import './content-polish.css';
 import './product-selector-polish.css';
 import './layout-balance.css';
 import './status-board.css';
+import './easy-extract.css';
 import PrivacyConsentLock from './components/PrivacyConsentLock';
 
 export const metadata = {
