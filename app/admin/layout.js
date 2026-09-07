@@ -1,5 +1,6 @@
 import './admin.css';
 import './admin-detail.css';
+import './admin-notices.css';
 
 export const metadata = {
   title: '사요 상품권 관리자',
