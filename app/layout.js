@@ -14,18 +14,27 @@ import './floating-quick-menu.css';
 import PrivacyConsentLock from './components/PrivacyConsentLock';
 import FloatingQuickMenu from './components/FloatingQuickMenu';
 
+const homeTitle='사요 상품권 문화상품권 현금화ㅣ컬쳐랜드 현금화ㅣ컬쳐랜드 매입ㅣ컬쳐랜드 문화상품권 매입 365일 24시간 운영';
+const homeDescription='문화상품권 컬쳐랜드 현금화와 상품권 매입 전문 사요 상품권입니다. 365일 24시간 운영하며 회원가입 없이 간편하게 신청할 수 있습니다. 빠른 확인과 입금으로 안전하고 편리한 상품권 거래 서비스를 제공합니다.';
+
 export const metadata = {
   metadataBase: new URL('https://seoyo.kr'),
-  title: '사요 상품권 | 상품권 매입시세·현금교환 안내',
-  description: '사요 상품권에서 컬쳐랜드, 북앤라이프, 틴캐시, 롯데 모바일상품권, 구글 기프트카드의 오늘 매입률과 상품권 교환 이용방법을 확인하세요.',
+  title: homeTitle,
+  description: homeDescription,
+  keywords: ['컬쳐랜드 현금화','컬쳐랜드 매입','문화상품권 매입','상품권 매입','문화상품권현금화','문상현금화','90%문화상품권매입','상품권매입','상품권교환','컬쳐 현금화','상품권 현금화','문화상품권 현금교환','컬쳐랜드매입'],
   alternates: { canonical: '/' },
   openGraph: {
     type: 'website',
     locale: 'ko_KR',
     url: 'https://seoyo.kr/',
     siteName: '사요 상품권',
-    title: '사요 상품권 | 상품권 매입시세·현금교환 안내',
-    description: '오늘의 상품권 매입률과 교환 신청, 처리 현황을 한눈에 확인하는 사요 상품권입니다.',
+    title: homeTitle,
+    description: homeDescription,
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: homeTitle,
+    description: homeDescription,
   },
   robots: { index: true, follow: true },
 };
