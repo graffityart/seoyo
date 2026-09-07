@@ -8,6 +8,7 @@ import './layout-balance.css';
 import './status-board.css';
 import './easy-extract.css';
 import './image-easy-polish.css';
+import './cash-pages.css';
 import PrivacyConsentLock from './components/PrivacyConsentLock';
 
 export const metadata = {
