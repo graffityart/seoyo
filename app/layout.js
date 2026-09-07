@@ -10,7 +10,9 @@ import './easy-extract.css';
 import './image-easy-polish.css';
 import './cash-pages.css';
 import './mobile-menu.css';
+import './floating-quick-menu.css';
 import PrivacyConsentLock from './components/PrivacyConsentLock';
+import FloatingQuickMenu from './components/FloatingQuickMenu';
 
 export const metadata = {
   metadataBase: new URL('https://seoyo.kr'),
@@ -31,7 +33,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="ko">
-      <body><PrivacyConsentLock/>{children}</body>
+      <body><PrivacyConsentLock/>{children}<FloatingQuickMenu/></body>
     </html>
   );
 }
