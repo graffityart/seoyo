@@ -9,6 +9,7 @@ import './status-board.css';
 import './easy-extract.css';
 import './image-easy-polish.css';
 import './cash-pages.css';
+import './mobile-menu.css';
 import PrivacyConsentLock from './components/PrivacyConsentLock';
 
 export const metadata = {
