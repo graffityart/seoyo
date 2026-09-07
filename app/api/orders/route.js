@@ -2,7 +2,7 @@ import crypto from 'crypto';
 import { NextResponse } from 'next/server';
 import { getDb, getServiceSettings } from '../../../lib/db';
 import { encryptText, hashPassword } from '../../../lib/secure';
-import { sendOrderEventSms } from '../../../lib/icode';
+import { sendNewOrderSms } from '../../../lib/icode';
 
 export const dynamic = 'force-dynamic';
 
@@ -126,8 +126,15 @@ export async function POST(request) {
       `;
     }
     await sql`INSERT INTO order_history (order_id, new_status, changed_by, reason) VALUES (${orderId}, 'received', 'system', '신규 상품권 교환 신청')`;
-    try{await sendOrderEventSms(Number(orderId),'received')}catch(error){console.error('Receipt SMS failed',error)}
-    return NextResponse.json({ ok: true, orderNo, expectedAmount: expected });
+
+    let smsResults=[];
+    try{
+      smsResults=await sendNewOrderSms({orderId:Number(orderId),orderNo,customerName:customer,phone:phoneDigits,requestedAmount:requested,expectedAmount:expected});
+    }catch(error){
+      console.error('Receipt SMS dispatch failed',error);
+    }
+
+    return NextResponse.json({ ok: true, orderNo, expectedAmount: expected, sms: smsResults.map(x=>({status:x.status||'failed',code:x.code||'',success:Boolean(x.success),pending:Boolean(x.pending)})) });
   } catch (error) {
     console.error('Order create failed', error);
     const setup = String(error?.message || '').includes('APP_ENCRYPTION_KEY');
