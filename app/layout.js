@@ -5,6 +5,7 @@ import './apply-polish.css';
 import './content-polish.css';
 import './product-selector-polish.css';
 import './layout-balance.css';
+import PrivacyConsentLock from './components/PrivacyConsentLock';
 
 export const metadata = {
   metadataBase: new URL('https://seoyo.kr'),
@@ -25,7 +26,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="ko">
-      <body>{children}</body>
+      <body><PrivacyConsentLock/>{children}</body>
     </html>
   );
 }
