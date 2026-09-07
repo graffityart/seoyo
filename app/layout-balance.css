@@ -16,6 +16,15 @@
 @media(min-width:761px) and (max-width:980px){
   .shell{width:calc(100% - 40px)}.heroBanner{height:auto}.heroBanner img{display:block;width:100%;height:auto;max-height:none;object-fit:contain}.rateGridKsdl{grid-template-columns:repeat(3,1fr)}.applySection>.shell,.lookupSection>.shell,.liveSection>.shell,.guideSection>.shell,.faqKsdl>.shell{width:min(900px,calc(100% - 40px))}
 }
+
+/* Quick PIN tools */
+.easyPinTools{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:18px 0 16px!important;padding-top:2px}
+.easyPinTools button{display:flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 14px;border:1px solid #b9ddeb!important;border-radius:12px!important;background:linear-gradient(180deg,#ffffff 0%,#f4fbff 100%)!important;box-shadow:0 5px 14px rgba(32,111,154,.07);color:#274153;font-size:13px;font-weight:800;letter-spacing:-.02em;cursor:pointer;transition:transform .16s ease,border-color .16s ease,box-shadow .16s ease,background .16s ease}
+.easyPinTools button span{display:grid;place-items:center;width:22px;height:22px;flex:0 0 22px;border-radius:7px;background:#eaf7fd;color:#1498d8;font-size:12px;font-weight:900}
+.easyPinTools button:hover{transform:translateY(-1px);border-color:#79c8e8!important;background:linear-gradient(180deg,#fff,#eef9ff)!important;box-shadow:0 8px 18px rgba(27,128,178,.12)}
+.easyPinTools button:active{transform:translateY(0);box-shadow:0 3px 9px rgba(27,128,178,.09)}
+.easyPinTools button:focus-visible{outline:3px solid rgba(22,166,232,.16);outline-offset:2px}
+
 @media(max-width:760px){
   .shell{width:calc(100% - 24px)}.topbar{position:sticky}.headerIn{min-height:60px}.lookupBtn{padding:9px 13px;font-size:10px}
   .heroBanner img{width:100%;height:auto;max-height:none;object-fit:contain}
@@ -26,4 +35,11 @@
   .guideSection,.faqKsdl{padding:50px 0 56px}.guideSection .sectionTitle h2,.faqKsdl .sectionTitle h2{font-size:23px}.stepGridKsdl article{min-height:175px;padding:19px 10px}.stepGridKsdl h3{font-size:14px}.stepGridKsdl p{font-size:10px;line-height:1.55}
   .faqListKsdl summary{font-size:11px}
   footer{padding:38px 0 22px}.footerGrid h3{font-size:15px}
+  .easyPinTools{gap:8px;margin:16px 0 14px!important}
+  .easyPinTools button{min-height:46px;padding:0 8px;border-radius:11px!important;font-size:11.5px;gap:6px;white-space:nowrap}
+  .easyPinTools button span{width:20px;height:20px;flex-basis:20px;border-radius:6px;font-size:11px}
+}
+@media(max-width:390px){
+  .easyPinTools button{font-size:10.5px;padding:0 6px;gap:5px}
+  .easyPinTools button span{width:18px;height:18px;flex-basis:18px;font-size:10px}
 }
