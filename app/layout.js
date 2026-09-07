@@ -13,6 +13,7 @@ import './mobile-menu.css';
 import './floating-quick-menu.css';
 import PrivacyConsentLock from './components/PrivacyConsentLock';
 import FloatingQuickMenu from './components/FloatingQuickMenu';
+import GlobalSeoJsonLd from './components/GlobalSeoJsonLd';
 
 const homeTitle='사요 상품권 문화상품권 현금화ㅣ컬쳐랜드 현금화ㅣ컬쳐랜드 매입ㅣ컬쳐랜드 문화상품권 매입 365일 24시간 운영';
 const homeDescription='문화상품권 컬쳐랜드 현금화와 상품권 매입 전문 사요 상품권입니다. 365일 24시간 운영하며 회원가입 없이 간편하게 신청할 수 있습니다. 빠른 확인과 입금으로 안전하고 편리한 상품권 거래 서비스를 제공합니다.';
@@ -42,7 +43,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="ko">
-      <body><PrivacyConsentLock/>{children}<FloatingQuickMenu/></body>
+      <body><GlobalSeoJsonLd/><PrivacyConsentLock/>{children}<FloatingQuickMenu/></body>
     </html>
   );
 }
