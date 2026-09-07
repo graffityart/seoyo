@@ -4,6 +4,7 @@ import { getActiveBanks, getActiveProducts, getServiceSettings } from '../../../
 import BrandLogo from '../../components/BrandLogo';
 import ApplyForm from '../../components/ApplyForm';
 import ProductCashMenu, { cashMenuItems } from '../../components/ProductCashMenu';
+import MobileMenu from '../../components/MobileMenu';
 
 const productImages={
   cultureland:'/images/products/%EC%BB%AC%EC%B3%90%EB%9E%9C%EB%93%9C%20%EB%AC%B8%ED%99%94%EC%83%81%ED%92%88%EA%B6%8C.svg',
@@ -33,7 +34,7 @@ export default async function CashPage({params}){
   const matched=rawProduct?[{id:Number(rawProduct.id),name:rawProduct.name,slug:rawProduct.slug,default_rate:Number(rawProduct.default_rate),imageUrl:productImages[rawProduct.slug]||rawProduct.image_url||''}]:[];
   const safeBanks=banks.map(b=>({id:Number(b.id),name:b.name,code:b.code}));
   return <div className="sayo cashLanding" id="top">
-    <header className="topbar"><div className="shell headerIn"><Link className="logo imageLogo" href="/"><BrandLogo/></Link><nav><Link href="/#rates">상품권매입시세</Link><Link href="/live">실시간매입현황</Link><Link href="/#guide">이용방법</Link><ProductCashMenu/><Link href="/#faq">자주묻는질문</Link><Link href="/#customer">고객센터</Link></nav><Link className="lookupBtn" href="/#lookup">내주문조회</Link></div></header>
+    <header className="topbar"><div className="shell headerIn"><Link className="logo imageLogo" href="/"><BrandLogo/></Link><nav><Link href="/#rates">상품권매입시세</Link><Link href="/live">실시간매입현황</Link><Link href="/#guide">이용방법</Link><ProductCashMenu/><Link href="/#faq">자주묻는질문</Link><Link href="/#customer">고객센터</Link></nav><Link className="lookupBtn" href="/#lookup">내주문조회</Link><MobileMenu/></div></header>
     <main>
       <section className="cashHero"><div className="shell"><p>GIFT CARD CASH SERVICE</p><h1>{page.title}</h1><span>{page.description}</span><Link href="#cash-apply">{page.title} 신청하기</Link></div></section>
 
