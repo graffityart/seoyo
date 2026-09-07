@@ -2,6 +2,7 @@ import crypto from 'crypto';
 import { NextResponse } from 'next/server';
 import { getDb, getServiceSettings } from '../../../lib/db';
 import { encryptText, hashPassword } from '../../../lib/secure';
+import { sendOrderEventSms } from '../../../lib/icode';
 
 export const dynamic = 'force-dynamic';
 
@@ -125,6 +126,7 @@ export async function POST(request) {
       `;
     }
     await sql`INSERT INTO order_history (order_id, new_status, changed_by, reason) VALUES (${orderId}, 'received', 'system', '신규 상품권 교환 신청')`;
+    try{await sendOrderEventSms(Number(orderId),'received')}catch(error){console.error('Receipt SMS failed',error)}
     return NextResponse.json({ ok: true, orderNo, expectedAmount: expected });
   } catch (error) {
     console.error('Order create failed', error);
