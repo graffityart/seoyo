@@ -16,7 +16,7 @@ export default async function LivePage(){
     return {orderNo:o.order_no,name:o.product_names||'상품권',count:Number(o.item_count||1),customer:o.customer_name||'',status:o.status,imageUrl:productImages[product?.slug]||product?.image_url||''};
   });
   return <div className="sayo livePage" id="top">
-    <header className="topbar"><div className="shell headerIn"><Link className="logo imageLogo" href="/"><BrandLogo/></Link><nav><Link href="/#lookup">내주문조회</Link><Link href="/#rates">상품권매입시세</Link><Link href="/live">실시간매입현황</Link><Link href="/#guide">이용방법</Link><ProductCashMenu/><Link href="/#faq">자주묻는질문</Link><Link href="/#customer">고객센터</Link></nav><Link className="lookupBtn" href="/#lookup">내주문조회</Link></div></header>
+    <header className="topbar"><div className="shell headerIn"><Link className="logo imageLogo" href="/"><BrandLogo/></Link><nav><Link href="/#rates">상품권매입시세</Link><Link href="/live">실시간매입현황</Link><Link href="/#guide">이용방법</Link><ProductCashMenu/><Link href="/#faq">자주묻는질문</Link><Link href="/#customer">고객센터</Link></nav><Link className="lookupBtn" href="/#lookup">내주문조회</Link></div></header>
     <main>
       <section className="liveHero"><div className="shell"><p>REAL-TIME STATUS</p><h1>실시간 매입 현황</h1><span>최근 접수된 상품권의 처리 상태를 한눈에 확인하세요.</span></div></section>
       <section className="livePageSection"><div className="shell">
