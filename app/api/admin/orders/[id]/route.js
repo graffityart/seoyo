@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { isAdmin } from '../../../../../lib/admin-auth';
 import { getDb } from '../../../../../lib/db';
+import { sendOrderEventSms } from '../../../../../lib/icode';
 
 const allowed = new Set(['received','reviewing','paid','rejected']);
 
@@ -18,6 +19,9 @@ export async function PATCH(request,{params}){
   if(!current.length) return NextResponse.json({message:'신청건을 찾을 수 없습니다.'},{status:404});
   await sql`UPDATE orders SET status=${status}, paid_amount=${paidAmount}, updated_at=now() WHERE id=${id}`;
   await sql`INSERT INTO order_history(order_id,previous_status,new_status,paid_amount,changed_by,reason) VALUES(${id},${current[0].status},${status},${paidAmount},'admin','관리자 처리상태 변경')`;
+  if(current[0].status!==status){
+    try{await sendOrderEventSms(Number(id),status)}catch(error){console.error('Status SMS failed',error)}
+  }
   return NextResponse.json({ok:true});
 }
 
