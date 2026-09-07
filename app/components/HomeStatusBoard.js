@@ -1,20 +1,11 @@
 'use client';
 
 import Link from 'next/link';
-import { NOTICE_POSTS } from '../../lib/notices';
 
 const statusLabel={received:'접수중',reviewing:'확인중',checking:'확인중',completed:'입금완료',paid:'입금완료',impossible:'처리불가',rejected:'처리불가'};
 
-export default function HomeStatusBoard({orders=[]}){
-  const rows=orders.map((o)=>({
-    key:o.order_no,
-    name:o.product_names||'상품권',
-    count:Number(o.item_count||1),
-    customer:o.customer_name||'',
-    imageUrl:o.imageUrl||'',
-    status:statusLabel[o.status]||'처리중',
-    statusClass:`status-${o.status||'received'}`
-  }));
+export default function HomeStatusBoard({orders=[],notices=[]}){
+  const rows=orders.map((o)=>({key:o.order_no,name:o.product_names||'상품권',count:Number(o.item_count||1),customer:o.customer_name||'',imageUrl:o.imageUrl||'',status:statusLabel[o.status]||'처리중',statusClass:`status-${o.status||'received'}`}));
   const loopRows=rows.length>4?[...rows,...rows]:rows;
   return <section id="live" className="statusBoardSection"><div className="shell statusBoardGrid">
     <article className="statusBoardCard liveBoardCard">
@@ -23,7 +14,7 @@ export default function HomeStatusBoard({orders=[]}){
     </article>
     <article className="statusBoardCard noticeBoardCard">
       <div className="statusBoardHead"><div className="statusBoardTitle"><span className="statusBoardIcon">♧</span><div><h2>공지사항</h2><p>새로운 소식을 전해드립니다.</p></div></div><Link className="statusArrow" href="/notice" aria-label="공지사항 전체보기">→</Link></div>
-      <div className="homeNoticeList">{NOTICE_POSTS.slice(0,6).map(post=><Link href={`/notice#notice-${post.id}`} key={post.id}><strong>{post.title}</strong><time>{post.date}</time></Link>)}</div>
+      <div className="homeNoticeList">{notices.length?notices.slice(0,6).map(post=><Link href={`/notice#notice-${post.id}`} key={post.id}><strong>{post.title}</strong><time>{post.date}</time></Link>):<div className="statusEmpty">등록된 공지사항이 없습니다.</div>}</div>
     </article>
   </div></section>
 }
