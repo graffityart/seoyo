@@ -23,6 +23,11 @@ export const metadata = {
   title: homeTitle,
   description: homeDescription,
   keywords: ['컬쳐랜드 현금화','컬쳐랜드 매입','문화상품권 매입','상품권 매입','문화상품권현금화','문상현금화','90%문화상품권매입','상품권매입','상품권교환','컬쳐 현금화','상품권 현금화','문화상품권 현금교환','컬쳐랜드매입'],
+  verification: {
+    other: {
+      'naver-site-verification': '031061a6b02896fcf1d1bea049cc004aabfbb26f',
+    },
+  },
   alternates: { canonical: '/' },
   openGraph: {
     type: 'website',
