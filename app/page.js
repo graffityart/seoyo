@@ -2,15 +2,25 @@ import { getActiveBanks, getActiveProducts, getLiveOrders, getServiceSettings, g
 import ApplyForm from './components/ApplyForm';
 import OrderLookup from './components/OrderLookup';
 import SitePopups from './components/SitePopups';
-import ProductRateGrid from './components/ProductRateGrid';
-const productImages={cultureland:'/images/products/%EC%BB%AC%EC%B3%90%EB%9E%9C%EB%93%9C%20%EB%AC%B8%ED%99%94%EC%83%81%ED%92%88%EA%B6%8C.svg','online-culture':'/images/products/online-culture.webp','cultureland-exchange':'/images/products/cultureland-exchange.webp',teencash:'/images/products/teencash.webp','booknlife-book':'/images/products/booknlife-book.webp','booknlife-exchange':'/images/products/booknlife-exchange.webp','lotte-mobile':'/images/products/lotte-mobile.webp','google-gift':'/images/products/google-gift.webp'};
+import ProductRateSection from './components/ProductRateSection';
+
+const productImages={
+  cultureland:'/images/products/%EC%BB%AC%EC%B3%90%EB%9E%9C%EB%93%9C%20%EB%AC%B8%ED%99%94%EC%83%81%ED%92%88%EA%B6%8C.svg',
+  'online-culture':'/images/products/%EC%98%A8%EB%9D%BC%EC%9D%B8%EB%AC%B8%ED%99%94%EC%83%81%ED%92%88%EA%B6%8C.jpg',
+  'cultureland-exchange':'/images/products/%EC%BB%AC%EC%B3%90%EB%9E%9C%EB%93%9C%20%EA%B5%90%ED%99%98%EA%B6%8C.png',
+  teencash:'/images/products/%ED%8B%B4%EC%BA%90%EC%8B%9C.png',
+  'booknlife-book':'/images/products/%EB%B6%81%EC%95%A4%EB%9D%BC%EC%9D%B4%ED%94%84%20%EB%8F%84%EC%84%9C%EB%AC%B8%ED%99%94%EC%83%81%ED%92%88%EA%B6%8C.svg',
+  'booknlife-exchange':'/images/products/%EB%B6%81%EC%95%A4%EB%9D%BC%EC%9D%B4%ED%94%84%20%EB%8F%84%EC%84%9C%EB%AC%B8%ED%99%94%EC%83%81%ED%92%88%EA%B6%8C.svg',
+  'lotte-mobile':'/images/products/%EB%A1%AF%EB%8D%B0%EB%AA%A8%EB%B0%94%EC%9D%BC%EC%83%81%ED%92%88%EA%B6%8C.png',
+  'google-gift':'/images/products/%EA%B5%AC%EA%B8%80%EA%B8%B8%ED%94%84%ED%8A%B8%20%EC%B9%B4%EB%93%9C.svg'
+};
 const steps=[['01','https://www.ksdl.kr/images/icon1.png','상품권 선택','보유한 상품권과 현재 매입률을 확인합니다.'],['02','https://www.ksdl.kr/images/icon2.png','신청정보 입력','PIN 번호, 계좌정보와 조회 비밀번호를 입력합니다.'],['03','https://www.ksdl.kr/images/icon3.png','상품권 검수','접수된 PIN의 사용 가능 여부와 권면금액을 확인합니다.'],['04','https://www.ksdl.kr/images/icon4.png','처리 완료','확인 결과에 따라 입금하고 처리상태를 안내합니다.']];
 const statusLabel={received:'접수중',reviewing:'확인중',checking:'확인중',completed:'입금완료',paid:'입금완료',impossible:'처리불가',rejected:'처리불가'};
 function maskName(name=''){const c=Array.from(name);if(c.length<=1)return'*';if(c.length===2)return`${c[0]}*`;return`${c[0]}*${c[c.length-1]}`}
 export const dynamic='force-dynamic';
 export default async function Home(){const settings=await getServiceSettings();const[products,banks,liveOrders,popups]=await Promise.all([getActiveProducts(),getActiveBanks(),getLiveOrders(settings.liveOrderLimit),getActivePopups(5)]);const safeProducts=products.map(p=>({id:Number(p.id),name:p.name,slug:p.slug,default_rate:Number(p.default_rate),imageUrl:productImages[p.slug]||p.image_url||''}));const safeBanks=banks.map(b=>({id:Number(b.id),name:b.name,code:b.code}));const safePopups=popups.map(p=>({id:Number(p.id),title:p.title||'',content:p.content||'',imageUrl:p.image_url||'',mobileImageUrl:p.mobile_image_url||'',linkUrl:p.link_url||''}));const now=new Date(),fmt=new Intl.DateTimeFormat('ko-KR',{timeZone:'Asia/Seoul',year:'2-digit',month:'2-digit',day:'2-digit',weekday:'short'}).format(now),timeFmt=new Intl.DateTimeFormat('ko-KR',{timeZone:'Asia/Seoul',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false});return <div className="sayo" id="top"><SitePopups popups={safePopups}/><header className="topbar"><div className="shell headerIn"><a className="logo" href="#top"><span className="logoSymbol">S</span><span className="logoText">사요 상품권</span></a><nav><a href="#lookup">내주문조회</a><a href="#rates">상품권매입시세</a><a href="#live">실시간매입현황</a><a href="#guide">이용방법</a><a href="#faq">자주묻는질문</a><a href="#customer">고객센터</a></nav><a className="lookupBtn" href="#lookup">내주문조회</a></div></header><main>
 <section className="heroBanner"><a href="#apply" aria-label="상품권 현금교환 신청하기"><picture><source media="(max-width:760px)" srcSet="/images/hero/mobilehero.webp"/><img src="/images/hero/pchero.webp" alt="사요 상품권 빠르고 안전한 상품권 매입 서비스" fetchPriority="high"/></picture></a></section>
-<ProductRateGrid products={safeProducts} dateLabel={fmt} notice={settings.rateNotice}/>
+<ProductRateSection products={safeProducts} rateNotice={settings.rateNotice} formattedDate={fmt}/>
 <section id="apply" className="applySection"><div className="shell"><div className="sectionTitle"><p>상품권 현금교환</p><h2>상품권 정보를 입력하고 바로 신청하세요</h2></div><ApplyForm products={safeProducts} banks={safeBanks} settings={settings}/></div></section>
 <section id="lookup" className="lookupSection"><div className="shell"><div className="sectionTitle"><p>내 주문 조회</p><h2>전화번호로 처리상태를 확인하세요</h2><span>접수 시 입력한 전화번호와 조회 비밀번호로 신청내역을 확인할 수 있습니다.</span></div><OrderLookup/></div></section>
 <section id="live" className="liveSection"><div className="shell"><div className="liveCard"><div className="liveHead"><h2>실시간 진행 현황</h2><div>{fmt}</div></div>{liveOrders.length?<div className="liveRows">{liveOrders.map(o=><div className="liveRow" key={o.order_no}><b>{o.product_names}</b><span>{maskName(o.customer_name)}</span><strong>{Number(o.requested_amount).toLocaleString()}원</strong><span>{statusLabel[o.status]||'처리중'}</span><time>{timeFmt.format(new Date(o.created_at))}</time></div>)}</div>:<div className="liveEmpty">아직 접수된 매입 내역이 없습니다.</div>}</div></div></section>
