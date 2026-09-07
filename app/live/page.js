@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { getActiveProducts, getLiveOrders, getServiceSettings } from '../../lib/db';
 import BrandLogo from '../components/BrandLogo';
+import ProductCashMenu from '../components/ProductCashMenu';
 
 const productImages={cultureland:'/images/products/%EC%BB%AC%EC%B3%90%EB%9E%9C%EB%93%9C%20%EB%AC%B8%ED%99%94%EC%83%81%ED%92%88%EA%B6%8C.svg','online-culture':'/images/products/%EC%98%A8%EB%9D%BC%EC%9D%B8%EB%AC%B8%ED%99%94%EC%83%81%ED%92%88%EA%B6%8C.jpg','cultureland-exchange':'/images/products/%EC%BB%AC%EC%B3%90%EB%9E%9C%EB%93%9C%20%EA%B5%90%ED%99%98%EA%B6%8C.png',teencash:'/images/products/%ED%8B%B4%EC%BA%90%EC%8B%9C.png','booknlife-book':'/images/products/%EB%B6%81%EC%95%A4%EB%9D%BC%EC%9D%B4%ED%94%84%20%EB%8F%84%EC%84%9C%EB%AC%B8%ED%99%94%EC%83%81%ED%92%88%EA%B6%8C.svg','booknlife-exchange':'/images/products/%EB%B6%81%EC%95%A4%EB%9D%BC%EC%9D%B4%ED%94%84%20%EB%8F%84%EC%84%9C%EB%AC%B8%ED%99%94%EC%83%81%ED%92%88%EA%B6%8C.svg','lotte-mobile':'/images/products/%EB%A1%AF%EB%8D%B0%EB%AA%A8%EB%B0%94%EC%9D%BC%EC%83%81%ED%92%88%EA%B6%8C.png','google-gift':'/images/products/%EA%B5%AC%EA%B8%80%EA%B8%B8%ED%94%84%ED%8A%B8%20%EC%B9%B4%EB%93%9C.svg'};
 const statusLabel={received:'접수중',reviewing:'확인중',checking:'확인중',completed:'입금완료',paid:'입금완료',impossible:'처리불가',rejected:'처리불가'};
@@ -15,7 +16,7 @@ export default async function LivePage(){
     return {orderNo:o.order_no,name:o.product_names||'상품권',count:Number(o.item_count||1),customer:o.customer_name||'',status:o.status,imageUrl:productImages[product?.slug]||product?.image_url||''};
   });
   return <div className="sayo livePage" id="top">
-    <header className="topbar"><div className="shell headerIn"><Link className="logo imageLogo" href="/"><BrandLogo/></Link><nav><Link href="/#lookup">내주문조회</Link><Link href="/#rates">상품권매입시세</Link><Link href="/live">실시간매입현황</Link><Link href="/#guide">이용방법</Link><Link href="/#faq">자주묻는질문</Link><Link href="/#customer">고객센터</Link></nav><Link className="lookupBtn" href="/#lookup">내주문조회</Link></div></header>
+    <header className="topbar"><div className="shell headerIn"><Link className="logo imageLogo" href="/"><BrandLogo/></Link><nav><Link href="/#lookup">내주문조회</Link><Link href="/#rates">상품권매입시세</Link><Link href="/live">실시간매입현황</Link><Link href="/#guide">이용방법</Link><ProductCashMenu/><Link href="/#faq">자주묻는질문</Link><Link href="/#customer">고객센터</Link></nav><Link className="lookupBtn" href="/#lookup">내주문조회</Link></div></header>
     <main>
       <section className="liveHero"><div className="shell"><p>REAL-TIME STATUS</p><h1>실시간 매입 현황</h1><span>최근 접수된 상품권의 처리 상태를 한눈에 확인하세요.</span></div></section>
       <section className="livePageSection"><div className="shell">
