@@ -24,7 +24,7 @@ export const metadata = {
   description: homeDescription,
   keywords: ['컬쳐랜드 현금화','컬쳐랜드 매입','문화상품권 매입','상품권 매입','문화상품권현금화','문상현금화','90%문화상품권매입','상품권매입','상품권교환','컬쳐 현금화','상품권 현금화','문화상품권 현금교환','컬쳐랜드매입'],
   icons: {icon: [{ url: '/images/brand/favicon.ico', type: 'image/x-icon' }],shortcut: '/images/brand/favicon.ico'},
-  verification: {other: {'naver-site-verification': '37a117ff6475928f6ce764fbddf83ff62f6e2e7a'}},
+  verification: {other: {'naver-site-verification': 'c23bac85f8637b4fd79a58b00534dc95cd21ed76'}},
   alternates: { canonical: '/' },
   openGraph: {type:'website',locale:'ko_KR',url:'https://www.pintoss.co.kr/',siteName:'사요 상품권',title:homeTitle,description:homeDescription},
   twitter: {card:'summary_large_image',title:homeTitle,description:homeDescription},
